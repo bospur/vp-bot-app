@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Spinner } from '@telegram-apps/telegram-ui';
 import { fetchArticle } from '../api';
@@ -8,6 +8,7 @@ import styles from './ArticleScreen.module.css';
 
 export default function ArticleScreen() {
   const { articleSlug } = useParams<{ articleSlug: string }>();
+  const navigate = useNavigate();
   const notify = useNotification();
 
   const { data, isLoading, isError } = useQuery({
@@ -25,6 +26,7 @@ export default function ArticleScreen() {
 
   return (
     <div className={styles.wrapper}>
+      <button className={styles.back} onClick={() => navigate(-1)}>‹ Назад</button>
       <h1 className={styles.title}>{data.title}</h1>
       <div
         className={styles.content}

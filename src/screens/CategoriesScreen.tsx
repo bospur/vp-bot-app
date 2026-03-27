@@ -26,6 +26,7 @@ export default function CategoriesScreen() {
   return (
     <NavList
       header="Выберите раздел"
+      onBack={() => navigate(-1)}
       items={(data ?? []).map((category) => ({
         key: category.id,
         title: category.name,
