@@ -10,8 +10,6 @@ import DoctorScreen from './screens/DoctorScreen';
 import ScheduleScreen from './screens/ScheduleScreen';
 import TelegramOnlyScreen from './screens/TelegramOnlyScreen';
 
-const isTelegram = Boolean(window.Telegram?.WebApp);
-
 function BackButtonHandler() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,7 +40,8 @@ function BackButtonHandler() {
 }
 
 export default function App() {
-  if (!isTelegram) return <TelegramOnlyScreen />;
+  // Проверяем внутри компонента — объект уже точно доступен при рендере
+  if (!window.Telegram?.WebApp) return <TelegramOnlyScreen />;
 
   return (
     <BrowserRouter>
