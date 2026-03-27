@@ -40,8 +40,12 @@ function BackButtonHandler() {
 }
 
 export default function App() {
-  // Проверяем внутри компонента — объект уже точно доступен при рендере
-  if (!window.Telegram?.WebApp) return <TelegramOnlyScreen />;
+  const isInsideTelegram =
+    Boolean(window.Telegram?.WebApp) ||
+    window.location.hash.includes('tgWebApp') ||
+    window.location.search.includes('tgWebApp');
+
+  if (!isInsideTelegram) return <TelegramOnlyScreen />;
 
   return (
     <BrowserRouter>
