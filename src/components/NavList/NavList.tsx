@@ -13,11 +13,17 @@ interface NavItem {
 interface NavListProps {
   header?: string;
   items: NavItem[];
+  onBack?: () => void;
 }
 
-export function NavList({ header, items }: NavListProps) {
+export function NavList({ header, items, onBack }: NavListProps) {
   return (
     <div className={styles.wrapper}>
+      {onBack && (
+        <button className={styles.back} onClick={onBack}>
+          ‹ Назад
+        </button>
+      )}
       {header && <p className={styles.header}>{header}</p>}
       {items.map((item) => (
         <button key={item.key} className={styles.item} onClick={item.onClick}>

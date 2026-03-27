@@ -29,6 +29,7 @@ export default function ArticlesScreen() {
   return (
     <NavList
       header="Статьи"
+      onBack={() => navigate(-1)}
       items={(data ?? []).map((article) => ({
         key: article.id,
         title: article.title,

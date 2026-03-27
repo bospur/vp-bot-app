@@ -6,6 +6,19 @@
   gap: 12px;
 }
 
+.back {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+  color: var(--tgui--link_color);
+  padding: 0;
+  text-align: left;
+  width: 100%;
+  align-self: flex-start;
+  margin-bottom: 4px;
+}
+
 .photo {
   width: 120px;
   height: 120px;

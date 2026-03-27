@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Spinner } from '@telegram-apps/telegram-ui';
 import { fetchDoctors } from '../api';
@@ -8,6 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL ?? 'https://api.snzbeachvolleyball2
 
 export default function DoctorScreen() {
   const { doctorId } = useParams<{ doctorId: string }>();
+  const navigate = useNavigate();
 
   const { data: doctors, isLoading } = useQuery({
     queryKey: ['doctors'],
@@ -21,6 +22,7 @@ export default function DoctorScreen() {
 
   return (
     <div className={styles.wrapper}>
+      <button className={styles.back} onClick={() => navigate(-1)}>‹ Назад</button>
       {doctor.photo_url && (
         <img
           src={`${API_URL}${doctor.photo_url}`}

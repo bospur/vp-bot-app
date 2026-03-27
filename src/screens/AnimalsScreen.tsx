@@ -20,6 +20,7 @@ export default function AnimalsScreen() {
   return (
     <NavList
       header="Выберите животное"
+      onBack={() => navigate(-1)}
       items={(data ?? []).map((animal) => ({
         key: animal.id,
         title: animal.name,

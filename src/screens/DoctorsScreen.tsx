@@ -22,6 +22,7 @@ export default function DoctorsScreen() {
   return (
     <NavList
       header="Наши врачи"
+      onBack={() => navigate(-1)}
       items={(data ?? []).map((doctor) => ({
         key: doctor.id,
         title: doctor.name,

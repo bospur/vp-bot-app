@@ -29,11 +29,19 @@ function BackButtonHandler() {
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
     if (!tg) return;
-    if (location.pathname === '/') {
+    const isRoot = location.pathname === '/';
+    if (isRoot) {
       tg.BackButton.hide();
     } else {
       tg.BackButton.show();
     }
+    // После сворачивания/разворачивания Telegram сбрасывает состояние BackButton —
+    // переподписываемся на activated чтобы восстановить видимость
+    const onActivated = () => {
+      if (!isRoot) tg.BackButton.show();
+    };
+    tg.onEvent('activated', onActivated);
+    return () => tg.offEvent('activated', onActivated);
   }, [location.pathname]);
 
   return null;
