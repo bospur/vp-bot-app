@@ -10,7 +10,7 @@ import DoctorScreen from './screens/DoctorScreen';
 import ScheduleScreen from './screens/ScheduleScreen';
 import TelegramOnlyScreen from './screens/TelegramOnlyScreen';
 
-const isTelegram = Boolean(window.Telegram?.WebApp?.initData);
+const isTelegram = Boolean(window.Telegram?.WebApp);
 
 function BackButtonHandler() {
   const navigate = useNavigate();
