@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { List, Section, Cell, Spinner } from '@telegram-apps/telegram-ui';
 import { fetchSchedule } from '../api';
-import type { ScheduleSlot } from '../api';
+import type { ScheduleEntry } from '../api';
 import { useNotification } from '../hooks/useNotification';
 
-function groupByDate(slots: ScheduleSlot[]): Record<string, ScheduleSlot[]> {
-  return slots.reduce<Record<string, ScheduleSlot[]>>((acc, slot) => {
+function groupByDate(slots: ScheduleEntry[]): Record<string, ScheduleEntry[]> {
+  return slots.reduce<Record<string, ScheduleEntry[]>>((acc, slot) => {
     if (!acc[slot.date]) acc[slot.date] = [];
     acc[slot.date].push(slot);
     return acc;
@@ -67,9 +67,9 @@ export default function ScheduleScreen() {
           {slots.map((slot, i) => (
             <Cell
               key={i}
-              subtitle={`${slot.start_time} — ${slot.end_time}`}
+              subtitle={`${slot.time_from} — ${slot.time_to}`}
             >
-              {slot.doctor_name}
+              {slot.full_name}
             </Cell>
           ))}
         </Section>

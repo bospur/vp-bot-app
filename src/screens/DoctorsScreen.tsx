@@ -25,10 +25,10 @@ export default function DoctorsScreen() {
       onBack={() => navigate(-1)}
       items={(data ?? []).map((doctor) => ({
         key: doctor.id,
-        title: doctor.name,
-        subtitle: doctor.specialization,
+        title: doctor.full_name,
+        subtitle: doctor.specialty,
         before: doctor.photo_url
-          ? <img src={`${API_URL}${doctor.photo_url}`} alt={doctor.name} style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} />
+          ? <img src={`${API_URL}${doctor.photo_url}`} alt={doctor.full_name} style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} />
           : '👨‍⚕️',
         onClick: () => navigate(`/doctors/${doctor.id}`),
       }))}

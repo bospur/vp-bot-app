@@ -27,20 +27,22 @@ export interface Article {
 
 export interface Doctor {
   id: number;
-  name: string;
-  specialization: string;
+  full_name: string;
+  specialty: string;
   description: string;
-  phone: string;
+  contacts: string;
   photo_url: string;
   status: string;
 }
 
-export interface ScheduleSlot {
+export interface ScheduleEntry {
   doctor_id: number;
-  doctor_name: string;
+  full_name: string;
+  specialty: string;
+  photo_url: string;
   date: string;
-  start_time: string;
-  end_time: string;
+  time_from: string;
+  time_to: string;
 }
 
 export const fetchAnimals = () =>
@@ -61,4 +63,6 @@ export const fetchDoctors = () =>
   apiClient.get<Doctor[]>('/doctors').then((r) => r.data);
 
 export const fetchSchedule = () =>
-  apiClient.get<ScheduleSlot[]>('/schedule').then((r) => r.data);
+  apiClient
+    .get<{ entries: ScheduleEntry[] }>('/schedule')
+    .then((r) => r.data.entries ?? []);
