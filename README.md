@@ -1,73 +1,66 @@
-# React + TypeScript + Vite
+# vp-bot-app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Telegram Mini App для ветеринарной клиники.
+Позволяет владельцам животных получить информацию первой помощи и расписание врачей прямо в Telegram.
 
-Currently, two official plugins are available:
+**Prod:** https://app.snzbeachvolleyball25.ru
+**Бот:** @VPract_bot
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Стек
 
-## React Compiler
+| Инструмент | Назначение |
+|---|---|
+| Vite + React 18 + TypeScript | Основа |
+| @telegram-apps/telegram-ui | Нативные UI-компоненты Telegram |
+| TanStack Query v5 | Запросы к API, кэширование |
+| React Router v6 | Навигация |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Быстрый старт
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+cp .env.example .env.local   # задай VITE_API_URL и VITE_CLINIC_SLUG
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Для тестирования Mini App нужен ngrok или аналог — Telegram требует HTTPS.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Переменные окружения
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+| Переменная | Описание | Пример |
+|---|---|---|
+| `VITE_API_URL` | Базовый URL бэкенда | `https://api.snzbeachvolleyball25.ru` |
+| `VITE_CLINIC_SLUG` | Slug клиники | `default` |
+
+## Экраны
+
+| Экран | Описание |
+|---|---|
+| Home | Главная с большими кнопками-разделами |
+| Animals | Список видов животных |
+| Categories | Категории для выбранного животного |
+| Articles | Список статей в категории |
+| Article | Полный текст статьи (HTML) |
+| Doctors | Список опубликованных врачей |
+| Doctor | Карточка врача с фото и ближайшим расписанием |
+| Schedule | Расписание всех врачей клиники |
+
+## Функциональность
+
+- [x] Навигация с Telegram BackButton (регистрируется один раз, показ/скрыт по роуту)
+- [x] Визуальная кнопка «‹ Назад» в NavList на всех экранах
+- [x] Адаптация темы под Telegram (`--tg-theme-bg-color`, `appearance`)
+- [x] Заглушка при открытии вне Telegram
+- [x] Snackbar-уведомления об ошибках
+- [x] Menu Button настроена через BotFather и программно при старте бота
+
+## Деплой
+
+Push в `dev` → GitHub Actions → `npm run build` → scp в `/var/www/vp-bot-app/` на VPS.
+
+## Связанные репозитории
+
+| Репозиторий | Назначение |
+|---|---|
+| [vp-bot-server](https://github.com/bospur/vp-bot-server) | Go бэкенд + Telegram бот |
+| [vp-bot-admin](https://github.com/bospur/vp-bot-admin) | React админ-панель |
