@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Cell, Section, List, Spinner } from '@telegram-apps/telegram-ui';
+import { Spinner } from '@telegram-apps/telegram-ui';
 import { fetchArticles } from '../api';
 import { useNotification } from '../hooks/useNotification';
+import { NavList } from '../components/NavList/NavList';
 
 export default function ArticlesScreen() {
   const navigate = useNavigate();
@@ -26,18 +27,13 @@ export default function ArticlesScreen() {
   if (isLoading) return <Spinner size="m" />;
 
   return (
-    <List>
-      <Section header="Статьи">
-        {data?.map((article) => (
-          <Cell
-            key={article.id}
-            onClick={() => navigate(`/articles/${article.slug}`)}
-            after="›"
-          >
-            {article.title}
-          </Cell>
-        ))}
-      </Section>
-    </List>
+    <NavList
+      header="Статьи"
+      items={(data ?? []).map((article) => ({
+        key: article.id,
+        title: article.title,
+        onClick: () => navigate(`/articles/${article.slug}`),
+      }))}
+    />
   );
 }

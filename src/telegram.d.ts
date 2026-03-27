@@ -8,10 +8,13 @@ interface TelegramBackButton {
 
 interface TelegramWebApp {
   initData: string;
+  colorScheme: 'light' | 'dark';
   BackButton: TelegramBackButton;
   ready(): void;
   expand(): void;
   close(): void;
+  onEvent(event: string, fn: () => void): void;
+  offEvent(event: string, fn: () => void): void;
 }
 
 interface Window {
