@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Cell, Section, List, Spinner } from '@telegram-apps/telegram-ui';
+import { Spinner } from '@telegram-apps/telegram-ui';
 import { fetchCategories } from '../api';
 import { useNotification } from '../hooks/useNotification';
+import { NavList } from '../components/NavList/NavList';
 
 export default function CategoriesScreen() {
   const navigate = useNavigate();
@@ -23,20 +24,13 @@ export default function CategoriesScreen() {
   if (isLoading) return <Spinner size="m" />;
 
   return (
-    <List>
-      <Section header="Выберите раздел">
-        {data?.map((category) => (
-          <Cell
-            key={category.id}
-            onClick={() =>
-              navigate(`/animals/${animalSlug}/categories/${category.slug}/articles`)
-            }
-            after="›"
-          >
-            {category.name}
-          </Cell>
-        ))}
-      </Section>
-    </List>
+    <NavList
+      header="Выберите раздел"
+      items={(data ?? []).map((category) => ({
+        key: category.id,
+        title: category.name,
+        onClick: () => navigate(`/animals/${animalSlug}/categories/${category.slug}/articles`),
+      }))}
+    />
   );
 }

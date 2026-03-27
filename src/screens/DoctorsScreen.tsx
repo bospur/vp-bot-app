@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Cell, Section, List, Spinner, Avatar } from '@telegram-apps/telegram-ui';
+import { Spinner } from '@telegram-apps/telegram-ui';
 import { fetchDoctors } from '../api';
 import { useNotification } from '../hooks/useNotification';
+import { NavList } from '../components/NavList/NavList';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'https://api.snzbeachvolleyball25.ru';
 
@@ -19,26 +20,17 @@ export default function DoctorsScreen() {
   if (isLoading) return <Spinner size="m" />;
 
   return (
-    <List>
-      <Section header="Наши врачи">
-        {data?.map((doctor) => (
-          <Cell
-            key={doctor.id}
-            onClick={() => navigate(`/doctors/${doctor.id}`)}
-            after="›"
-            before={
-              doctor.photo_url ? (
-                <Avatar src={`${API_URL}${doctor.photo_url}`} size={40} />
-              ) : (
-                <Avatar size={40}>👨‍⚕️</Avatar>
-              )
-            }
-            subtitle={doctor.specialization}
-          >
-            {doctor.name}
-          </Cell>
-        ))}
-      </Section>
-    </List>
+    <NavList
+      header="Наши врачи"
+      items={(data ?? []).map((doctor) => ({
+        key: doctor.id,
+        title: doctor.name,
+        subtitle: doctor.specialization,
+        before: doctor.photo_url
+          ? <img src={`${API_URL}${doctor.photo_url}`} alt={doctor.name} style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }} />
+          : '👨‍⚕️',
+        onClick: () => navigate(`/doctors/${doctor.id}`),
+      }))}
+    />
   );
 }

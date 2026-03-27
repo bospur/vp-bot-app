@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import HomeScreen from './screens/HomeScreen';
 import AnimalsScreen from './screens/AnimalsScreen';
 import CategoriesScreen from './screens/CategoriesScreen';
@@ -13,24 +13,30 @@ import TelegramOnlyScreen from './screens/TelegramOnlyScreen';
 const isTelegram = Boolean(window.Telegram?.WebApp?.initData);
 
 function BackButtonHandler() {
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const navigateRef = useRef(navigate);
+  navigateRef.current = navigate;
 
+  // Регистрируем обработчик один раз — стабильная ссылка через ref
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
     if (!tg) return;
+    const handleBack = () => navigateRef.current(-1);
+    tg.BackButton.onClick(handleBack);
+    return () => tg.BackButton.offClick(handleBack);
+  }, []);
 
-    const isRoot = location.pathname === '/';
-    if (isRoot) {
+  // Показываем/скрываем кнопку при смене роута
+  useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+    if (!tg) return;
+    if (location.pathname === '/') {
       tg.BackButton.hide();
     } else {
       tg.BackButton.show();
     }
-
-    const handleBack = () => navigate(-1);
-    tg.BackButton.onClick(handleBack);
-    return () => tg.BackButton.offClick(handleBack);
-  }, [location.pathname, navigate]);
+  }, [location.pathname]);
 
   return null;
 }

@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppRoot } from '@telegram-apps/telegram-ui';
@@ -18,14 +18,32 @@ const queryClient = new QueryClient({
   },
 });
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+function Root() {
+  const [appearance, setAppearance] = useState<'light' | 'dark'>(
+    () => window.Telegram?.WebApp?.colorScheme ?? 'light',
+  );
+
+  useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+    if (!tg) return;
+    const handler = () => setAppearance(tg.colorScheme);
+    tg.onEvent('themeChanged', handler);
+    return () => tg.offEvent('themeChanged', handler);
+  }, []);
+
+  return (
     <QueryClientProvider client={queryClient}>
-      <AppRoot>
+      <AppRoot appearance={appearance}>
         <NotificationProvider>
           <App />
         </NotificationProvider>
       </AppRoot>
     </QueryClientProvider>
+  );
+}
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <Root />
   </StrictMode>,
 );
