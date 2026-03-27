@@ -1,0 +1,42 @@
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { Cell, Section, List, Spinner } from '@telegram-apps/telegram-ui';
+import { fetchCategories } from '../api';
+import { useNotification } from '../hooks/useNotification';
+
+export default function CategoriesScreen() {
+  const navigate = useNavigate();
+  const notify = useNotification();
+  const { animalSlug } = useParams<{ animalSlug: string }>();
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['categories', animalSlug],
+    queryFn: () => fetchCategories(animalSlug!),
+    enabled: !!animalSlug,
+  });
+
+  useEffect(() => {
+    if (isError) notify('Не удалось загрузить данные. Попробуйте позже.', 'error');
+  }, [isError, notify]);
+
+  if (isLoading) return <Spinner size="m" />;
+
+  return (
+    <List>
+      <Section header="Выберите раздел">
+        {data?.map((category) => (
+          <Cell
+            key={category.id}
+            onClick={() =>
+              navigate(`/animals/${animalSlug}/categories/${category.slug}/articles`)
+            }
+            after="›"
+          >
+            {category.name}
+          </Cell>
+        ))}
+      </Section>
+    </List>
+  );
+}

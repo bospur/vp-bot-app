@@ -1,0 +1,37 @@
+.wrapper {
+  padding: 16px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--tgui--text_color);
+}
+
+.content {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--tgui--text_color);
+}
+
+.content h1,
+.content h2,
+.content h3 {
+  margin: 16px 0 8px;
+  font-weight: 600;
+}
+
+.content p {
+  margin-bottom: 10px;
+}
+
+.content ul,
+.content ol {
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+.content strong {
+  font-weight: 600;
+}
