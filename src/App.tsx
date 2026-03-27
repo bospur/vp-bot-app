@@ -8,6 +8,9 @@ import ArticleScreen from './screens/ArticleScreen';
 import DoctorsScreen from './screens/DoctorsScreen';
 import DoctorScreen from './screens/DoctorScreen';
 import ScheduleScreen from './screens/ScheduleScreen';
+import TelegramOnlyScreen from './screens/TelegramOnlyScreen';
+
+const isTelegram = Boolean(window.Telegram?.WebApp?.initData);
 
 function BackButtonHandler() {
   const location = useLocation();
@@ -33,6 +36,8 @@ function BackButtonHandler() {
 }
 
 export default function App() {
+  if (!isTelegram) return <TelegramOnlyScreen />;
+
   return (
     <BrowserRouter>
       <BackButtonHandler />

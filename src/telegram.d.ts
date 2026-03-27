@@ -7,6 +7,7 @@ interface TelegramBackButton {
 }
 
 interface TelegramWebApp {
+  initData: string;
   BackButton: TelegramBackButton;
   ready(): void;
   expand(): void;
